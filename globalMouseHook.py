@@ -1,29 +1,38 @@
 import threading
-from time import sleep
-from pynput.mouse import Button, Controller
-from pynput.mouse import Listener
+import mouseTurboClick
+from pynput.mouse import Listener, Button
 
 class globalMouseHook(threading.Thread):
-    def __init__(self, isLeftBtn=False, isRightBtn=False, interval=0.1):
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.isLeftBtn = isLeftBtn
-        self.isRightBtn = isRightBtn
-        self.interval = interval
-        self.mouse = Controller()
-        self.isLeftBtnGo = False
+        self.isLeftDown = False
+        self.isRightDown = False
+        self.mouseTurboClick = None
 
     def on_move(self, x, y):
-        # print('Pointer at {0}'.format(self.mouse.position))
-        return
+        # print('Pointer at {0}'.format((x, y)))
+        self.x = x
+        self.y = y
 
     def on_click(self, x, y, button, pressed):
-        # print('{0} at {1}'.format('Pressed' if pressed else 'Released',(x, y)))
-        if (pressed and self.isLeftBtn):
-            self.isLeftBtnGo = True
-            print (self.isLeftBtnGo)
-        elif (not pressed and self.isLeftBtn):
-            self.isLeftBtnGo = False
-            print (self.isLeftBtnGo)
+        print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
+        if (pressed):
+            if (button == Button.left):
+                self.mouseTurboClick.isLeftDown = True
+            elif (button == Button.right):
+                self.mouseTurboClick.isRightDown = True
+        else:
+            self.mouseTurboClick.isLeftDown = False
+            self.mouseTurboClick.isRightDown = False
+
+    def setMouseTurboClick(self, mouseTurboClick: mouseTurboClick):
+        self.mouseTurboClick = mouseTurboClick
+
+    def getIsLeftDown(self):
+        return self.isLeftDown
+
+    def getIsRightDown(self):
+        return self.isRightDown
 
     def run(self):
         # Collect events until released
@@ -31,13 +40,8 @@ class globalMouseHook(threading.Thread):
             on_move=self.on_move,
             on_click=self.on_click)
         self.listener.start()
-        while (True):
-            print ('1')
-            if (self.isLeftBtnGo):
-                print ('2')
-                self.mouse.press(Button.left)
-                self.mouse.release(Button.left)
     
     def stop(self):
         self.listener.stop()
-        
+
+
