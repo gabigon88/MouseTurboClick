@@ -4,11 +4,11 @@ import tkinter as tk
 import globalMouseHook
 import mouseTurboClick
 
-# 追蹤滑鼠postion與event的listener
+# 追蹤滑鼠postion與event的listener(也是一個thread)
 globalMouseHook = globalMouseHook.globalMouseHook()
 globalMouseHook.start()
 
-# 用來執行滑鼠連點的子thread
+# 用來執行滑鼠連點的thread
 thread = None
 
 # 建立UI
@@ -47,7 +47,7 @@ def print_speed(v):
 
 speedScaleVal = tk.IntVar()
 # 建立一個尺度滑條，長度300字元，從0開始1000結束，以200為刻度，間距精度為10
-speedScale = tk.Scale(speed_frame, label='連點間距調整: 0(ms)', font=('Microsoft JhengHei', 12), from_=0, to=1000, variable=speedScaleVal, orient=tk.HORIZONTAL, length=300, showvalue=0, tickinterval=200, resolution=10, command=print_speed)
+speedScale = tk.Scale(speed_frame, font=('Microsoft JhengHei', 12), from_=0, to=1000, variable=speedScaleVal, orient=tk.HORIZONTAL, length=300, showvalue=0, tickinterval=200, resolution=10, command=print_speed)
 speedScale.set(100) # 預設間隔為100ms
 speedScale.pack()
 
@@ -59,14 +59,12 @@ def startClick():
     if (thread == None):
         thread = mouseTurboClick.mouseTurboClick(globalMouseHook, speedScaleVal.get()/1000, isLeftOn.get(), isRightOn.get()) # 建立一個子執行緒
         thread.start() # 執行該子執行緒
-        globalMouseHook.setMouseTurboClick(thread)
 
 def stopClick():
     global thread
     if (thread != None):
         thread.stop()
         thread = None
-        globalMouseHook.setMouseTurboClick(thread)
         gc.collect() # 手動釋放memory
 
 startBtn = tk.Button(window, text='開始連點', font=('Microsoft JhengHei', 14), command=startClick)

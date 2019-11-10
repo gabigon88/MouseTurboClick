@@ -1,5 +1,4 @@
 import threading
-import mouseTurboClick
 from pynput.mouse import Listener, Button
 
 class globalMouseHook(threading.Thread):
@@ -7,7 +6,6 @@ class globalMouseHook(threading.Thread):
         threading.Thread.__init__(self)
         self.isLeftDown = False
         self.isRightDown = False
-        self.mouseTurboClick = None
 
     def on_move(self, x, y):
         # print('Pointer at {0}'.format((x, y)))
@@ -18,15 +16,12 @@ class globalMouseHook(threading.Thread):
         print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
         if (pressed):
             if (button == Button.left):
-                self.mouseTurboClick.isLeftDown = True
+                self.isLeftDown = True
             elif (button == Button.right):
-                self.mouseTurboClick.isRightDown = True
+                self.isRightDown = True
         else:
-            self.mouseTurboClick.isLeftDown = False
-            self.mouseTurboClick.isRightDown = False
-
-    def setMouseTurboClick(self, mouseTurboClick: mouseTurboClick):
-        self.mouseTurboClick = mouseTurboClick
+            self.isLeftDown = False
+            self.isRightDown = False
 
     def getIsLeftDown(self):
         return self.isLeftDown
