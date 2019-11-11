@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import threading
 from pynput.mouse import Listener, Button
 
@@ -9,24 +11,19 @@ class globalMouseHook(threading.Thread):
 
     def on_move(self, x, y):
         # print('Pointer at {0}'.format((x, y)))
-        self.x = x
-        self.y = y
+        return
 
     def on_click(self, x, y, button, pressed):
-        print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
-        if (pressed):
-            if (button == Button.left):
-                self.isLeftDown = True
-            elif (button == Button.right):
-                self.isRightDown = True
-        else:
-            self.isLeftDown = False
-            self.isRightDown = False
+        # print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
+        if button == Button.left:
+            self.isLeftDown = not self.isLeftDown
+        elif button == Button.right:
+            self.isRightDown = not self.isRightDown
 
-    def getIsLeftDown(self):
+    def is_leftDown(self):
         return self.isLeftDown
 
-    def getIsRightDown(self):
+    def is_rightDown(self):
         return self.isRightDown
 
     def run(self):
