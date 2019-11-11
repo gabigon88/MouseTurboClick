@@ -27,8 +27,9 @@ mouseTurboClick.py `-> 發出滑鼠連點virtual event的thread`
 ## UML檔
 
 
-## 善可改善
+## 尚可改善
 - [ ] 增加keyborad event listener，以提供除了點擊UI button外的啟動暫停方式  
+- [ ] 增加滑鼠中鍵連點功能(感覺沒有需求?)
 
 ## 後記
 當年學完 java後也曾經練習此程式  
@@ -38,10 +39,10 @@ mouseTurboClick.py `-> 發出滑鼠連點virtual event的thread`
   
 最後，紀錄一下在coding中遇到的困難  
 * 1.要找python的mouse event listener，因為python不像java有內建套件可以處理滑鼠事件。  
-* 這部分上網查就可以查到很多套件了ex. pynput、mouse、pyautogui等等。  
+這部分上網查就可以查到很多套件了ex. pynput、mouse、pyautogui等等。  
 我一開始選用pyautogui，結果寫到一半發現，套件只能發出virtual mouse event，不能監聽，所以套件換成使用pynput。  
 * 2.mouse event listener也會監聽到自己發出的virtual mouse event......。  
-* 一開始一直找不出問題在哪，後來去看官方文件，才知道程式發出的虛擬事件也會監聽到。  
+一開始一直找不出問題在哪，後來去看官方文件，才知道程式發出的虛擬事件也會監聽到。  
 解析流程如下：實體左鍵壓下→監聽者發現左鍵壓下→開始連點→虛擬左鍵壓下→虛擬左鍵鬆開→監聽者發現左鍵鬆開→停止連點。  
 這部分debug超久的，會重新用python寫滑鼠連點，有一個原因也是以前用 java寫的原始碼自己都沒有保存下來，所以也沒辦法看以前怎麼解決的，最後是靈機一動想到，每次滑鼠press與release都將flag反轉一次就可以解決了。  
 (原先是設計press時assign成true，release時assign成false)  
