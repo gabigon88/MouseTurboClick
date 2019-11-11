@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import threading
 from pynput.mouse import Listener, Button
 

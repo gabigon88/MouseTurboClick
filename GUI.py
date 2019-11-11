@@ -13,7 +13,7 @@ def close_window():
 
 # 為Scale定義觸發函式
 def print_speed(v):
-    speedScale.config(label='連點間距調整: ' + v + '(ms)')
+    speedScale.config(label='連點間隔調整: ' + v + '(ms)')
 
 # 取得滑鼠連點的設定值
 def get_turbo_status():
