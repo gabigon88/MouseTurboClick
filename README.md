@@ -19,13 +19,12 @@
 本程式是按下開始連點後，<font color=#E60000>壓住要連發的滑鼠鍵</font>，才會自動連點  
 (要連點左鍵就壓住左鍵，要連點右鍵就壓住右鍵)  
 
-## 檔案架構
 GUI.py `-> 主程式(GUI)`  
 globalMouseHook.py `-> mouse event的listener(也是一個thread)`  
 mouseTurboClick.py `-> 發出滑鼠連點virtual event的thread`   
 
-## UML檔
-
+## UML圖
+![image](/out/preview_UML/preview_UML.png)  
 
 ## 尚可改善
 - [ ] 增加keyborad event listener，以提供除了點擊UI button外的啟動暫停方式  

@@ -1,0 +1,28 @@
+@startuml
+scale 1.5
+class GUI
+class globalMouseHook{
+    - bool isLeftDown
+    - bool isRightDown
+    + is_leftDown()
+    + is_rightDown()
+    + run()
+    + stop()
+}
+class mouseTurboClick{
+    - float interval
+    - bool isRightOn
+    - bool isLeftOn
+    - bool isRun 
+    + set_attributes()
+    + run()
+    + stop()
+}
+
+globalMouseHook -right-|> Thread
+mouseTurboClick --|> Thread
+
+GUI *--> globalMouseHook : has a
+GUI *-right-> mouseTurboClick : has a
+mouseTurboClick --> globalMouseHook : use
+@enduml
