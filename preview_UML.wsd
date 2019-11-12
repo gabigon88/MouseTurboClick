@@ -1,5 +1,5 @@
 @startuml
-scale 1.5
+scale 1.2
 class GUI
 class globalMouseHook{
     - bool isLeftDown

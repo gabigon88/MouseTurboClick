@@ -2,7 +2,7 @@
 用python練習寫連滑鼠連點程式
 
 ## 執行方式
-在<font color=#E60000>win10 64bit</font>的系統下直接執行<font color=#E60000>MouseTurboClick.exe</font>開啟   
+在<font color=#E60000>win10 64bit</font>的系統下直接執行<font color=#E60000>MouseTurboClickGUI.exe</font>開啟   
 此檔案是用pyinstaller打包好的exe檔  
 但受限於pyinstaller打包的限制，無法在win7使用  
 又打包時是用的64位元的python，故無法在32位元的OS上使用  
@@ -19,6 +19,7 @@
 本程式是按下開始連點後，<font color=#E60000>壓住要連發的滑鼠鍵</font>，才會自動連點  
 (要連點左鍵就壓住左鍵，要連點右鍵就壓住右鍵)  
 
+## 檔案架構
 GUI.py `-> 主程式(GUI)`  
 globalMouseHook.py `-> mouse event的listener(也是一個thread)`  
 mouseTurboClick.py `-> 發出滑鼠連點virtual event的thread`   
