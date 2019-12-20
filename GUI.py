@@ -62,34 +62,28 @@ window.configure(background='#cccccc')
 window.protocol("WM_DELETE_WINDOW", close_window)
 
 # UI標頭
-header_label = tk.Label(window, text='滑鼠連點程式', font=('Microsoft JhengHei', 14))
+header_label = tk.Label(window, text='滑鼠連點程式', font=('Microsoft JhengHei', 14), pady=5)
 header_label.pack()
 
+# UI 連點設定區域
+mouseBtn_frame = tk.Frame(window)
+mouseBtn_frame.pack(side=tk.TOP)
 # UI 左鍵設定區域
-leftBtn_frame = tk.Frame(window)
-leftBtn_frame.pack(side=tk.TOP)
-leftBtn_label = tk.Label(leftBtn_frame, text='左鍵連點', font=('Microsoft JhengHei', 14))
-leftBtn_label.pack(side=tk.LEFT)
 isLeftOn = tk.BooleanVar()
-leftBtn_checkBtn = tk.Checkbutton(leftBtn_frame, variable=isLeftOn)
+leftBtn_checkBtn = tk.Checkbutton(mouseBtn_frame, text='左鍵連點', font=('Microsoft JhengHei', 14), variable=isLeftOn, relief=tk.GROOVE)
 leftBtn_checkBtn.select() # 預設勾選左點連點
-leftBtn_checkBtn.pack(side=tk.LEFT)
-
+leftBtn_checkBtn.pack(side=tk.LEFT, padx=3)
 # UI 右鍵設定區域
-rightBtn_frame = tk.Frame(window)
-rightBtn_frame.pack(side=tk.TOP)
-rightBtn_label = tk.Label(rightBtn_frame, text='右鍵連點', font=('Microsoft JhengHei', 14))
-rightBtn_label.pack(side=tk.LEFT)
 isRightOn = tk.BooleanVar()
-rightBtn_checkBtn = tk.Checkbutton(rightBtn_frame, variable=isRightOn)
-rightBtn_checkBtn.pack(side=tk.LEFT)
+rightBtn_checkBtn = tk.Checkbutton(mouseBtn_frame, text='右鍵連點', font=('Microsoft JhengHei', 14), variable=isRightOn, relief=tk.GROOVE)
+rightBtn_checkBtn.pack(side=tk.LEFT, padx=3)
 
 # UI 速度設定區域
 speed_frame = tk.Frame(window)
 speed_frame.pack(side=tk.TOP)
 speedScaleVal = tk.IntVar()
 # 建立一個尺度滑條，長度320字元，從0開始1000結束，以200為刻度，間距精度為10
-speedScale = tk.Scale(speed_frame, font=('Microsoft JhengHei', 13), from_=0, to=1000, variable=speedScaleVal, orient=tk.HORIZONTAL, length=300, showvalue=0, tickinterval=200, resolution=10, command=print_speed)
+speedScale = tk.Scale(speed_frame, font=('Microsoft JhengHei', 13), from_=0, to=1000, variable=speedScaleVal, orient=tk.HORIZONTAL, length=300, showvalue=False, tickinterval=200, resolution=10, command=print_speed)
 speedScale.set(100) # 預設間隔為100ms
 speedScale.pack()
 
@@ -97,9 +91,9 @@ speedScale.pack()
 button_frame = tk.Frame(window)
 button_frame.pack(side=tk.TOP)
 startBtn = tk.Button(button_frame, text='開始連點', font=('Microsoft JhengHei', 14), command=start_click)
-startBtn.pack(side=tk.LEFT, padx=5)
+startBtn.pack(side=tk.LEFT, padx=3)
 stopBtn = tk.Button(button_frame, text='停止連點', font=('Microsoft JhengHei', 14), command=stop_click)
-stopBtn.pack(side=tk.RIGHT, padx=5)
+stopBtn.pack(side=tk.RIGHT, padx=3)
 
 # UI 狀態顯示區域
 status_label = tk.Label(window, text='未啟動', font=('Microsoft JhengHei', 14))
