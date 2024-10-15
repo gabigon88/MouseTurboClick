@@ -24,7 +24,6 @@ class globalMouseHook():
             self.isRightDown = not self.isRightDown
         if button == mouse.Button.middle:
             self.isMiddleDown = not self.isMiddleDown
-        print(f'isLeftDown is {self.isLeftDown}')
         
     def is_leftDown(self):
         return self.isLeftDown
