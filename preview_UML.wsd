@@ -4,25 +4,34 @@ class GUI
 class globalMouseHook{
     - bool isLeftDown
     - bool isRightDown
+    - bool isMiddleDown
     + is_leftDown()
     + is_rightDown()
-    + run()
-    + stop()
+    + is_middleDown
+    + on_click()
+}
+class globalKeyboardHook{
+    + set_hotKey(callback)
+    + clear_hotkey()
+    + on_press()
 }
 class mouseTurboClick{
     - float interval
     - bool isRightOn
     - bool isLeftOn
+    - bool isMiddleOn
     - bool isRun 
     + set_attributes()
     + run()
     + stop()
 }
 
-globalMouseHook -right-|> Thread
+globalMouseHook --|> Thread
+globalKeyboardHook --|> Thread
 mouseTurboClick --|> Thread
 
 GUI *--> globalMouseHook : has a
-GUI *-right-> mouseTurboClick : has a
-mouseTurboClick --> globalMouseHook : use
+GUI *--> globalKeyboardHook : has a
+GUI *--> mouseTurboClick : has a
+mouseTurboClick -left-> globalMouseHook : use
 @enduml
