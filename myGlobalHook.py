@@ -33,11 +33,13 @@ class globalMouseHook():
     
     def is_middleDown(self):
         return self.isMiddleDown 
-
-    def stop(self):
+    
+    def return_default(self):
         self.isLeftDown = False
         self.isRightDown = False
         self.isMiddleDown = False
+
+    def stop(self):
         if self.listener is not None:
             self.listener.stop()
 
