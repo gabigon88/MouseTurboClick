@@ -2,13 +2,12 @@
 scale 1.2
 class GUI
 class globalMouseHook{
-    - bool isLeftDown
-    - bool isRightDown
-    - bool isMiddleDown
-    + is_leftDown()
-    + is_rightDown()
-    + is_middleDown
+    - bool pressedEvent
+    - bool leftPressed
+    - bool rightPressed
+    - bool middlePressed
     + on_click()
+    + return_default()
 }
 class globalKeyboardHook{
     + set_hotKey(callback)
@@ -17,11 +16,13 @@ class globalKeyboardHook{
 }
 class mouseTurboClick{
     - float interval
-    - bool isRightOn
-    - bool isLeftOn
-    - bool isMiddleOn
-    - bool isRun 
+    - bool rightOn
+    - bool leftOn
+    - bool middleOn
+    - bool running 
     + set_attributes()
+    + full_auto_mode()
+    + semi_auto_mode()
     + run()
     + stop()
 }
@@ -34,4 +35,5 @@ GUI *--> globalMouseHook : has a
 GUI *--> globalKeyboardHook : has a
 GUI *--> mouseTurboClick : has a
 mouseTurboClick -left-> globalMouseHook : use
+globalKeyboardHook -left-> mouseTurboClick : call
 @enduml

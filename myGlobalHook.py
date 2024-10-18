@@ -8,36 +8,34 @@ class globalMouseHook():
             on_click=self.on_click)
         self.listener.start()
         
-        self.isLeftDown = False
-        self.isRightDown = False
-        self.isMiddleDown = False
+        self.pressedEvent = False
+        self.leftPressed = False
+        self.rightPressed = False
+        self.middlePressed = False
 
     def on_move(self, x, y):
         # print('Pointer at {0}'.format((x, y)))
         return
 
     def on_click(self, x, y, button, pressed):
-        # print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
-        if button == mouse.Button.left:
-            self.isLeftDown = not self.isLeftDown
-        if button == mouse.Button.right:
-            self.isRightDown = not self.isRightDown
-        if button == mouse.Button.middle:
-            self.isMiddleDown = not self.isMiddleDown
-        
-    def is_leftDown(self):
-        return self.isLeftDown
+        print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
+        if pressed:
+            self.pressedEvent = True
+        else:
+            self.pressedEvent = False
 
-    def is_rightDown(self):
-        return self.isRightDown
-    
-    def is_middleDown(self):
-        return self.isMiddleDown 
-    
+        if button == mouse.Button.left:
+            self.leftPressed = not self.leftPressed
+        elif button == mouse.Button.right:
+            self.rightPressed = not self.rightPressed
+        elif button == mouse.Button.middle:
+            self.middlePressed = not self.middlePressed
+        
     def return_default(self):
-        self.isLeftDown = False
-        self.isRightDown = False
-        self.isMiddleDown = False
+        self.pressedEvent = False
+        self.leftPressed = False
+        self.rightPressed = False
+        self.middlePressed = False
 
     def stop(self):
         if self.listener is not None:
