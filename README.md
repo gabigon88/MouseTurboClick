@@ -73,5 +73,5 @@ mouseTurboClick.py `-> 滑鼠連點 發出virtual event的thread`
 1. listener 本身就是一個thread，建立後可以直接使用，我當年居然還在外面自己包了一層thread
 2. 雖然我有讓視窗關閉時 自動清除thread，但有時候連點thread就是沒正確清除  
    我這次把執行序設為daemon，主程序結束後強制停止，再加一層保障
-3. 當初沒加 hotkey功能，一方面是我懶，另外是我也知道要怎麼寫，當年我可搞不清楚callback要怎麼用  
+3. 當初沒加 hotkey功能，一方面是我懶，另外是我不知道要怎麼寫，當年我也搞不清楚callback要怎麼用  
    現在有GPT幫助，一下就加好功能了，也覺得充滿感慨，科技進步的速度日新月異

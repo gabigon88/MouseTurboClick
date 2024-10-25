@@ -12,9 +12,10 @@ class mouseTurboClick(threading.Thread):
         self.running = True # 用來動態停止無限回圈的flag
 
     def set_attributes(self, interval, leftOn, rightOn, middleOn, autoMode):
-        self.interval = interval # 設定連點間距
         if interval < 0.01: # 避免間距為0
             self.interval = 0.01
+        else:
+            self.interval = interval # 設定連點間距
         self.leftOn = leftOn # 左鍵連點是否開啟
         self.rightOn = rightOn # 右鍵連點是否開啟
         self.middleOn = middleOn # 中鍵連點是否開啟
@@ -43,10 +44,9 @@ class mouseTurboClick(threading.Thread):
             sleep(self.interval)
 
     def run(self):
-        while self.mouseHook.pressedEvent:
-            sleep(0.5) # 如果thread執行當下, 滑鼠鍵是下壓狀態就sleep, 等待滑鼠鍵鬆開
-        
         if self.autoMode == 0:
+            while self.mouseHook.pressedEvent:
+                sleep(0.5) # 如果啟動當下, 滑鼠鍵是下壓狀態 就sleep, 等待滑鼠鍵鬆開
             self.semi_auto_mode()
         else:
             self.full_auto_mode()
