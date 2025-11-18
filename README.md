@@ -25,13 +25,18 @@ ex. 要連點左鍵就壓住左鍵，要連點右鍵就壓住右鍵
 2. 全自動模式: 與網上找到的連點程式相同，由鍵盤觸發  
 ex. 鍵盤按下F9後，會開始自動連點，直到鍵盤按下F10才會停止  
 
-另外補充，我有發現code在macOS上，下壓模式 會無法如期運行，這部份我應該不會處理  
+另外補充，我有發現code在macOS上，下壓模式 開始連點後會停不下來  
+是windows和mac的虛擬點擊 實作不同導致，但這部份我應該不會另外對OS做適配處理  
+
+程式關閉時，會保存最後的狀態，還有記住視窗最後位置，下次開啟時會自動恢復  
+選單可以將設定還原為預設值  
 
 ## 檔案架構
 
 GUI.py `-> 主程式(GUI)`  
 myGlobalHook.py `-> 鍵盤滑鼠event 的listener(是thread)`  
 mouseTurboClick.py `-> 滑鼠連點 發出virtual event的thread`  
+setting_manager.py `-> 用來讀寫使用者設定(congfig.ini)的模塊`  
 
 ## UML圖
 
@@ -42,7 +47,7 @@ mouseTurboClick.py `-> 滑鼠連點 發出virtual event的thread`
 - [X]  增加keyborad event listener，以提供除了點擊UI button外的啟動暫停方式
 - [X]  增加滑鼠中鍵連點功能 (感覺沒有需求?)
 - [X]  新增模式切換, 能選擇 [滑鼠壓下才連點] 和 [啟動自動連點] 兩種模式
-- [ ]  讀寫config檔, 保存使用者習慣
+- [X]  讀寫config檔, 保存使用者習慣
 
 ## 後記
 
@@ -75,3 +80,8 @@ mouseTurboClick.py `-> 滑鼠連點 發出virtual event的thread`
    我這次把執行序設為daemon，主程序結束後強制停止，再加一層保障
 3. 當初沒加 hotkey功能，一方面是我懶，另外是我不知道要怎麼寫，當年我也搞不清楚callback要怎麼用  
    現在有GPT幫助，一下就加好功能了，也覺得充滿感慨，科技進步的速度日新月異
+
+## 2025後記
+
+一年一更XD，沒意外不會有大改動了，有想到再慢慢優化  
+把先前挖坑補上，會在同一路徑下，自動生成設定檔 settings.ini  

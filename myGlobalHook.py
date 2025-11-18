@@ -18,7 +18,7 @@ class globalMouseHook():
         return
 
     def on_click(self, x, y, button, pressed):
-        print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
+        # print('{0} at {1} with {2}'.format('Pressed' if pressed else 'Released', (x, y), button))
         if pressed:
             self.pressedEvent = True
         else:

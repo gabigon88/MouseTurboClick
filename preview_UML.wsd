@@ -26,6 +26,15 @@ class mouseTurboClick{
     + run()
     + stop()
 }
+class SettingManager{
+    - dict default_settings
+    - dict settings
+    + load()
+    + save()
+    + get()
+    + set()
+    + reset_all()
+}
 
 globalMouseHook --|> Thread
 globalKeyboardHook --|> Thread
@@ -34,6 +43,7 @@ mouseTurboClick --|> Thread
 GUI *--> globalMouseHook : has a
 GUI *--> globalKeyboardHook : has a
 GUI *--> mouseTurboClick : has a
+GUI *-right-> SettingManager : has a
 mouseTurboClick -left-> globalMouseHook : use
 globalKeyboardHook -left-> mouseTurboClick : call
 @enduml

@@ -5,18 +5,19 @@ import tkinter as tk
 from tkinter import ttk
 import myGlobalHook
 from mouseTurboClick import mouseTurboClick
+from setting_manager import SettingManager
 
 class AutoClickerGUI:
     subfont = ('Microsoft JhengHei', 12) # 下面用來重複設定字體
+    config = SettingManager()
 
     def __init__(self, root: tk):
         self.root = root
         self.root.title('Mouse Turbo Click')
-        self.root.geometry('350x400')
         self.root.configure(background='#cccccc')
         self.root.config(padx=20, pady=5)
         self.root.protocol("WM_DELETE_WINDOW", self.close_window)
-        
+
         # 追蹤滑鼠postion與event的listener(本身是一個thread)
         self.mouseHook = myGlobalHook.globalMouseHook()
         # 追蹤鍵盤event的listener(本身是一個thread)
@@ -39,7 +40,6 @@ class AutoClickerGUI:
         self.leftBtn_frame.grid(row=1, column=0, sticky="nsew")
         self.isLeftOn = tk.BooleanVar()
         self.leftBtn_checkBtn = tk.Checkbutton(self.leftBtn_frame, text='左鍵連點', font=self.subfont, variable=self.isLeftOn)
-        self.leftBtn_checkBtn.select() # 預設勾選左點連點
         self.leftBtn_checkBtn.pack()
         # UI 中鍵啟用設定
         self.middleBtn_frame = tk.Frame(self.root)
@@ -60,7 +60,6 @@ class AutoClickerGUI:
         self.speedScale = tk.Scale(self.root, font=('Microsoft JhengHei', 13), from_=0, to=1000, 
                             variable=self.speedScaleVal, orient=tk.HORIZONTAL, 
                             showvalue=False, tickinterval=200, resolution=10, command=self.print_speed)
-        self.speedScale.set(100) # 預設速度為100ms
         self.speedScale.grid(row=2, column=0, columnspan=3, sticky="nsew")
 
         # UI 熱鍵設定區塊
@@ -81,17 +80,15 @@ class AutoClickerGUI:
         self.function_keys = [f"F{i}" for i in range(1, 13)]
         # 第一個下拉選單（啟動自動連點的熱鍵）
         self.start_key_combobox = ttk.Combobox(root, values=self.function_keys, state='readonly')
-        self.start_key_combobox.current(8) # 預設F9啟動
         self.start_key_combobox.grid(row=5, column=1, columnspan=2, sticky="nsew")
         self.start_key_combobox.bind("<<ComboboxSelected>>", self.set_hotkeys)
         # 第二個下拉選單（停止自動連點的熱鍵）
         self.stop_key_combobox = ttk.Combobox(root, values=self.function_keys, state='readonly')
-        self.stop_key_combobox.current(9) # 預設F10停止
         self.stop_key_combobox.grid(row=6, column=1, columnspan=2, sticky="nsew")
         self.stop_key_combobox.bind("<<ComboboxSelected>>", self.set_hotkeys)
 
         # UI 自動模式切換區塊
-        self.mode_label = tk.Label(self.root, text='連點模式切換', font=self.subfont)
+        self.mode_label = tk.Label(self.root, text='連點模式選擇', font=self.subfont)
         self.mode_label.grid(row=8, column=0, sticky="nsew")
 
         # 建立兩個互斥的 RadioButton
@@ -111,6 +108,15 @@ class AutoClickerGUI:
         self.status_label = tk.Label(self.root, text='未啟動', font=self.subfont)
         self.status_label.grid(row=10, column=0, rowspan=2, columnspan=2, sticky="nsew")
 
+        menubar = tk.Menu(self.root)
+        filemenu = tk.Menu(menubar)
+        filemenu.add_command(label="各項目恢復預設值", command=self.restore_default_config)
+        filemenu.add_command(label="還原視窗大小", command=self.restore_window_default_size)
+        menubar.add_cascade(label="選單", menu=filemenu)
+        root.config(menu=menubar)
+
+        self.load_config() # 讀取並設定預設值
+        self.root.after(10, self.root.geometry(self.config.get("window_position"))) # 還原視窗位置
         self.set_hotkeys()
 
     # 關閉視窗時先清除thread
@@ -118,13 +124,56 @@ class AutoClickerGUI:
         self.stop_click()
         self.mouseHook.stop()
         self.keyboardHook.stop()
+        self.save_config()
         self.root.destroy()
+
+    # 恢復視窗預設大小
+    def restore_window_default_size(self):
+        self.root.geometry(self.config.default_settings.get("window_position").split('+')[0])
+
+    # 設定檔恢復預設值
+    def restore_default_config(self):
+        self.config.reset_all()
+        self.leftBtn_checkBtn.deselect()
+        self.middleBtn_checkBtn.deselect()
+        self.rightBtn_checkBtn.deselect()
+        self.HotKeyOn_checkBtn.deselect()
+        self.load_config()
+
+    # 讀取設定檔, 並自動設定相應元件
+    def load_config(self):
+        self.config.load()
+        if self.config.get("isLeftOn"):
+            self.leftBtn_checkBtn.select()
+        if self.config.get("isMiddleOn"):
+            self.middleBtn_checkBtn.select()
+        if self.config.get("isRightOn"):
+            self.rightBtn_checkBtn.select()
+        if self.config.get("isHotKeyOn"):
+            self.HotKeyOn_checkBtn.select()
+        self.speedScale.set(self.config.get("speed"))
+        self.start_key_combobox.set(self.config.get("hotkey_start"))
+        self.stop_key_combobox.set(self.config.get("hotkey_stop"))
+        self.mode_var.set(self.config.get("mode"))
+        
+    # 將當前設定儲存到設定檔
+    def save_config(self):
+        self.config.set("window_position", root.geometry())
+        self.config.set("isLeftOn", self.isLeftOn.get())
+        self.config.set("isMiddleOn", self.isMiddleOn.get())
+        self.config.set("isRightOn", self.isRightOn.get())
+        self.config.set("speed", self.speedScaleVal.get())
+        self.config.set("isHotKeyOn", self.isHotKeyOn.get())
+        self.config.set("hotkey_start", self.start_key_combobox.get())
+        self.config.set("hotkey_stop", self.stop_key_combobox.get())
+        self.config.set("mode", self.mode_var.get())
+        self.config.save()
 
     # Scale觸發函式
     def print_speed(self, v):
         self.speedScale.config(label='連點間隔調整: ' + v + '(ms)')
 
-    # 取得設定值資訊
+    # 取得連點設定值資訊
     def get_turbo_status(self):
         status = []
         if self.mode_var.get():
@@ -140,7 +189,6 @@ class AutoClickerGUI:
             status.append('中鍵')
         status.append('間隔' + str(self.speedScaleVal.get()) + '(ms)')
         return ' '.join(status)
-
 
     # 啟動連點
     def start_click(self):
