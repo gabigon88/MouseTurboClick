@@ -109,7 +109,7 @@ class AutoClickerGUI:
         self.status_label.grid(row=10, column=0, rowspan=2, columnspan=2, sticky="nsew")
 
         menubar = tk.Menu(self.root)
-        filemenu = tk.Menu(menubar)
+        filemenu = tk.Menu(menubar, tearoff=0)
         filemenu.add_command(label="各項目恢復預設值", command=self.restore_default_config)
         filemenu.add_command(label="還原視窗大小", command=self.restore_window_default_size)
         menubar.add_cascade(label="選單", menu=filemenu)
